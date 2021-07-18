@@ -42,6 +42,7 @@ export default {
         commit("AUTH_ERROR", err);
         localStorage.removeItem("token");
         console.log(err);
+        console.log(err.message);
       }
     },
     async LOGIN({ commit }, form) {

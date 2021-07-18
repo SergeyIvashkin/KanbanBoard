@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Kanbat from "../views/Kanbat.vue";
+import KanbanBoard from "../views/KanbanBoard.vue";
 import Registration from "../components/Registration";
 import Login from "../components/login";
 
@@ -14,9 +14,9 @@ const routes = [
     component: Home,
   },
   {
-    path: "/kanbat",
-    name: "kanbat",
-    component: Kanbat,
+    path: "/kanbanBoard",
+    name: "kanbanBoard",
+    component: KanbanBoard,
     meta: {
       requiresAuth: true,
     },

@@ -28,6 +28,6 @@ a {
   font-family: "Montserrat", sans-serif !important;
 }
 .v-main {
-  padding: 60px 50px !important;
+  // padding: 60px 50px !important;
 }
 </style>

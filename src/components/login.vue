@@ -77,7 +77,7 @@ export default {
         };
         await this.LOGIN(form);
         if (this.AUTH_STATUS === "success" && this.IS_LOGGED_IN) {
-          this.$router.push("/Kanbat");
+          this.$router.push("/kanbanBoard");
         }
       }
     },
