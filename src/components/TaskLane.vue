@@ -8,7 +8,13 @@
       <div class="body">
         <div class="space"></div>
         <!-- new Block -->
-        <div class="new">hdhhs</div>
+        <draggable v-model="myList" :options="{ group: 'default' }">
+          <TaskLaneItem
+            :item="item"
+            v-for="item in items"
+            :key="item.id"
+          ></TaskLaneItem>
+        </draggable>
         <!--  -->
         <div class="space"></div>
         <!--  -->
@@ -28,11 +34,23 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
+import TaskLaneItem from "./TaskLaneItem.vue";
+import Draggable from "vuedraggable";
+
 export default {
-  name: "Card",
+  name: "TaskLane",
+  components: {
+    TaskLaneItem,
+    Draggable,
+  },
   props: {
     title: {
       type: String,
+    },
+    items: {
+      type: Array,
     },
   },
   data() {
@@ -41,11 +59,24 @@ export default {
     };
   },
   methods: {
-    getColor(stage) {
-      if (stage === "ON-HOLD") return "#F38849";
-      if (stage === "IN-PROGRESS") return "#3A87B9";
-      if (stage === "NEEDS-REVIEW") return "#EFC350";
-      if (stage === "APPROVED") return "#499F65";
+    ...mapMutations(["UP_DATE_LIST"]),
+    getColor(title) {
+      if (title === "ON-HOLD") return "#F38849";
+      if (title === "IN_PROGRESS") return "#3A87B9";
+    },
+    // ...mapActions(["GET_TASKS"]),
+  },
+  mounted() {
+    // this.GET_TASKS();
+  },
+  computed: {
+    myList: {
+      get() {
+        return this.items;
+      },
+      set(items) {
+        return this.UP_DATE_LIST({ items, row: this.title });
+      },
     },
   },
 };

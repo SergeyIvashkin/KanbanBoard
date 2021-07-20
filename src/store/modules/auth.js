@@ -35,7 +35,7 @@ export default {
         const username = response.data.username;
 
         localStorage.setItem("token", token);
-        axios.defaults.headers.common["Authorization"] = token;
+        axios.defaults.headers.common["Authorization"] = `JWT ${token}`;
         commit("AUTH_SUCCESS", token, username);
         console.log(response);
       } catch (err) {
@@ -59,7 +59,7 @@ export default {
         const username = response.data.username;
 
         localStorage.setItem("token", token);
-        axios.defaults.headers.common["Authorization"] = token;
+        axios.defaults.headers.common["Authorization"] = `JWT ${token}`;
         commit("AUTH_SUCCESS", token, username);
         console.log(response);
       } catch (err) {

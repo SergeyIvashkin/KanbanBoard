@@ -1,27 +1,19 @@
 <template>
   <div class="main">
-    <div v-for="title of stages" :key="title">
-      <Card :title="title" />
-    </div>
+    <TaskLane title="onHold" :items="ON_HOLD" />
+    <TaskLane title="inProgress" :items="IN_PROGRESS" />
   </div>
 </template>
 
 <script>
-import Card from "../components/Card.vue";
+import { mapGetters } from "vuex";
+
+import TaskLane from "../components/TaskLane.vue";
 export default {
   name: "KanbanBoard",
-  components: { Card },
-  data() {
-    return {
-      stages: ["ON-HOLD", "IN-PROGRESS", "NEEDS-REVIEW", "APPROVED"],
-      blocks: [
-        {
-          id: 1,
-          status: "ON-HOLD",
-          title: "Test",
-        },
-      ],
-    };
+  components: { TaskLane },
+  computed: {
+    ...mapGetters(["ON_HOLD", "IN_PROGRESS"]),
   },
 };
 </script>
