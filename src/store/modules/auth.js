@@ -1,14 +1,14 @@
-import Vue from "vue";
-import Vuex from "vuex";
 import axios from "axios";
 
-Vue.use(Vuex);
 // ASSA1212cxxvAsAAAVVV1212 Sergey
 export default {
+  // namespaced: true,
   state: {
     status: "",
     token: localStorage.getItem("token") || "",
     username: "",
+    reasonLogin: "",
+    reasonReg: "",
   },
   mutations: {
     AUTH_SUCCESS(state, token, username) {
@@ -19,13 +19,22 @@ export default {
     AUTH_ERROR(state) {
       state.status = "error";
     },
+    ERROR_REG(state, err) {
+      for (const [, value] of Object.entries(err)) {
+        state.reasonReg = value[0];
+      }
+    },
+    ERROR_LOGIN(state, err) {
+      for (const [, value] of Object.entries(err)) {
+        state.reasonLogin = value[0];
+      }
+    },
   },
   actions: {
     async REGIST_USER({ commit }, form) {
       try {
         const headers = {
           "Content-Type": "application/json",
-          Authorization: "JWT token",
         };
         const data = JSON.stringify(form);
         let response = await axios.post("/users/create/", data, {
@@ -37,19 +46,16 @@ export default {
         localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = `JWT ${token}`;
         commit("AUTH_SUCCESS", token, username);
-        console.log(response);
       } catch (err) {
-        commit("AUTH_ERROR", err);
+        commit("AUTH_ERROR");
+        commit("ERROR_REG", err.response.data);
         localStorage.removeItem("token");
-        console.log(err);
-        console.log(err.message);
       }
     },
     async LOGIN({ commit }, form) {
       try {
         const headers = {
           "Content-Type": "application/json",
-          Authorization: "JWT token",
         };
         const data = JSON.stringify(form);
         let response = await axios.post("/users/login/", data, {
@@ -61,16 +67,17 @@ export default {
         localStorage.setItem("token", token);
         axios.defaults.headers.common["Authorization"] = `JWT ${token}`;
         commit("AUTH_SUCCESS", token, username);
-        console.log(response);
       } catch (err) {
-        commit("AUTH_ERROR", err);
+        commit("AUTH_ERROR");
+        commit("ERROR_LOGIN", err.response.data);
         localStorage.removeItem("token");
-        console.log(err);
       }
     },
   },
   getters: {
     IS_LOGGED_IN: (state) => !!state.token,
     AUTH_STATUS: (state) => state.status,
+    ERROR_LOGIN: (state) => state.reasonLogin,
+    ERROR_REG: (state) => state.reasonReg,
   },
 };

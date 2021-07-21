@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import axios from "axios";
+import interceptorsSetup from "./utils/interceptors";
 
 axios.defaults.baseURL = "https://trello.backend.tests.nekidaem.ru/api/v1/";
 const token = localStorage.getItem("token");
@@ -13,6 +14,8 @@ if (token) {
 export default axios;
 
 Vue.config.productionTip = false;
+
+interceptorsSetup();
 
 new Vue({
   router,

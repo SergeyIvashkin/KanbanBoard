@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="mx-auto" width="320" max-width="320">
-      <h2 :style="`background: ${getColor(title)}`">
+      <h2 :style="`background-color: ${getColor()}`">
         {{ title }}
       </h2>
       <!--  -->
@@ -11,6 +11,7 @@
         <draggable v-model="myList" :options="{ group: 'default' }">
           <TaskLaneItem
             :item="item"
+            :title="title"
             v-for="item in items"
             :key="item.id"
           ></TaskLaneItem>
@@ -19,8 +20,13 @@
         <div class="space"></div>
         <!--  -->
         <div class="block_text" v-show="show">
-          <textarea placeholder="Ввести заголовок для этой карточки"></textarea>
-          <v-btn width="66%" color="#626062"> Add card</v-btn>
+          <textarea
+            v-model="text"
+            placeholder="Ввести заголовок для этой карточки"
+          ></textarea>
+          <v-btn @click="addNewTask" width="66%" color="#626062">
+            Add card</v-btn
+          >
           <v-icon class="float-right" @click="show = false"> mdi-close</v-icon>
         </div>
       </div>
@@ -34,11 +40,23 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 
 import TaskLaneItem from "./TaskLaneItem.vue";
 import Draggable from "vuedraggable";
 
+const rowMap = {
+  onHold: "0",
+  inProgress: "1",
+  needReview: "2",
+  approved: "3",
+};
+const colorMap = {
+  onHold: "#F38849",
+  inProgress: "#3A87B9",
+  needReview: "#EFC350",
+  approved: "#499F65",
+};
 export default {
   name: "TaskLane",
   components: {
@@ -55,27 +73,38 @@ export default {
   },
   data() {
     return {
+      text: "",
       show: false,
+      row: "0",
     };
   },
-  methods: {
-    ...mapMutations(["UP_DATE_LIST"]),
-    getColor(title) {
-      if (title === "ON-HOLD") return "#F38849";
-      if (title === "IN_PROGRESS") return "#3A87B9";
-    },
-    // ...mapActions(["GET_TASKS"]),
-  },
   mounted() {
-    // this.GET_TASKS();
+    this.row = rowMap[this.title];
   },
+  methods: {
+    addNewTask() {
+      if (this.text) {
+        let data = {
+          row: this.row,
+          text: this.text,
+        };
+        this.ADD_NEW_TASK(data);
+        this.show = false;
+      }
+    },
+    ...mapActions(["ADD_NEW_TASK", "UP_DATE_LIST"]),
+    getColor() {
+      return colorMap[this.title];
+    },
+  },
+
   computed: {
     myList: {
       get() {
         return this.items;
       },
       set(items) {
-        return this.UP_DATE_LIST({ items, row: this.title });
+        return this.UP_DATE_LIST({ items, title: this.title, row: this.row });
       },
     },
   },

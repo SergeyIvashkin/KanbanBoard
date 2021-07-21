@@ -64,11 +64,14 @@
         SEND
       </v-btn>
     </div>
+    <div align="center" class="font-weight-medium red--text mt-5">
+      {{ ERROR_REG }}
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Registration",
@@ -96,7 +99,6 @@ export default {
   methods: {
     ...mapActions(["REGIST_USER"]),
     async submit() {
-      // console.log(this.$refs.form.validate());
       if (this.$refs.form.validate()) {
         let form = {
           username: this.userName,
@@ -107,6 +109,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(["ERROR_REG"]),
     passwordConfirmationRule() {
       return () =>
         this.password === this.repeatPassword || "Password must match";

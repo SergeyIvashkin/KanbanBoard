@@ -45,6 +45,9 @@
         Login
       </v-btn>
     </div>
+    <div align="center" class="font-weight-medium red--text mt-5">
+      {{ ERROR_LOGIN }}
+    </div>
   </div>
 </template>
 
@@ -75,7 +78,11 @@ export default {
           username: this.userName,
           password: this.password,
         };
-        await this.LOGIN(form);
+        try {
+          await this.LOGIN(form);
+        } catch (error) {
+          console.log(error);
+        }
         if (this.AUTH_STATUS === "success" && this.IS_LOGGED_IN) {
           this.$router.push("/kanbanBoard");
         }
@@ -83,7 +90,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["IS_LOGGED_IN", "AUTH_STATUS"]),
+    ...mapGetters(["IS_LOGGED_IN", "AUTH_STATUS", "ERROR_LOGIN"]),
   },
 };
 </script>

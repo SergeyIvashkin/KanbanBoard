@@ -1,21 +1,29 @@
 <template>
   <div class="task-lane-item">
-    <!-- <div class="block" v-for="item in data" :key="item.id"> -->
     <div class="block">
       <div class="text-id">id:{{ item.id }}</div>
       <div>
         {{ item.text }}
       </div>
     </div>
+    <v-icon @click="deleteItem" color="white" class="float-right">
+      mdi-close</v-icon
+    >
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "TaskLaneItem",
-  props: ["item"],
-  // data: {
-  //   type: Array,
-  // },
+  props: ["item", "title"],
+  methods: {
+    ...mapActions(["DELETE_ITEM"]),
+    deleteItem() {
+      const id = this.item.id;
+      const title = this.title;
+      this.DELETE_ITEM({ id, title });
+    },
+  },
 };
 </script>
 <style>

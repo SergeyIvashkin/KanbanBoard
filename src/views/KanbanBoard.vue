@@ -2,18 +2,26 @@
   <div class="main">
     <TaskLane title="onHold" :items="ON_HOLD" />
     <TaskLane title="inProgress" :items="IN_PROGRESS" />
+    <TaskLane title="needReview" :items="NEED_REVIEW" />
+    <TaskLane title="approved" :items="APPROVED" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 import TaskLane from "../components/TaskLane.vue";
 export default {
   name: "KanbanBoard",
   components: { TaskLane },
   computed: {
-    ...mapGetters(["ON_HOLD", "IN_PROGRESS"]),
+    ...mapGetters(["ON_HOLD", "IN_PROGRESS", "NEED_REVIEW", "APPROVED"]),
+  },
+  methods: {
+    ...mapActions(["GET_TASKS"]),
+  },
+  created() {
+    this.GET_TASKS();
   },
 };
 </script>
