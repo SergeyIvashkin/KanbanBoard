@@ -49,7 +49,6 @@ export default {
       }
     },
     async DELETE_ITEM({ commit }, { id, title }) {
-      console.log(title);
       const headers = {
         "Content-Type": "application/json",
       };

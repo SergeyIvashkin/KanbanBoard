@@ -105,11 +105,14 @@ export default {
           password: this.password,
         };
         await this.REGIST_USER(form);
+        if (this.AUTH_STATUS === "success" && this.IS_LOGGED_IN) {
+          this.$router.push("/kanbanBoard");
+        }
       }
     },
   },
   computed: {
-    ...mapGetters(["ERROR_REG"]),
+    ...mapGetters(["ERROR_REG", "IS_LOGGED_IN", "AUTH_STATUS"]),
     passwordConfirmationRule() {
       return () =>
         this.password === this.repeatPassword || "Password must match";
