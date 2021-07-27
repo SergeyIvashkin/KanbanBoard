@@ -35,4 +35,7 @@ export default {
   color: #a3a9a9;
   font-size: 16px;
 }
+button {
+  bottom: 50px;
+}
 </style>
